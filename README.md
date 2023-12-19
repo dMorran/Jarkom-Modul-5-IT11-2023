@@ -467,4 +467,174 @@ pada `Revolte`:
     service isc-dhcp-relay status
     ```
 
+# Soal 1
+
+Agar topologi yang kalian buat dapat mengakses keluar, kalian diminta untuk mengkonfigurasi Aura menggunakan iptables, tetapi tidak ingin menggunakan MASQUERADE
+
+### Aura
+
+  ```
+  iptables -t nat -A POSTROUTING -o eth0 -j SNAT -s 10.69.14.128/30 --to-source 192.168.122.2
+  iptables -t nat -A POSTROUTING -o eth0 -j SNAT -s 10.69.14.132/30 --to-source 192.168.122.2
+  ```
+
+### Heiter
+
+  ```
+  iptables -t nat -A POSTROUTING -o eth0 -j SNAT -s 10.69.0.0/21 --to-source 10.69.14.130
+  iptables -t nat -A POSTROUTING -o eth0 -j SNAT -s 10.69.8.0/22 --to-source 10.69.14.130
+  ```
+
+### Frieren
+
+  ```
+  iptables -t nat -A POSTROUTING -o eth0 -j SNAT -s 10.69.14.140/30 --to-source 10.69.14.134
+  iptables -t nat -A POSTROUTING -o eth0 -j SNAT -s 10.69.14.136/30 --to-source 10.69.14.134
+  ```
+
+### Himmel
+
+  ```
+  iptables -t nat -A POSTROUTING -o eth0 -j SNAT -s 10.69.14.0/25 --to-source 10.69.14.142
+  iptables -t nat -A POSTROUTING -o eth0 -j SNAT -s 10.69.12.0/23 --to-source 10.69.14.142
+  ```
+
+### Fern
+
+  ```
+  iptables -t nat -A POSTROUTING -o eth0 -j SNAT -s 10.69.14.144/30 --to-source 10.69.14.3
+  iptables -t nat -A POSTROUTING -o eth0 -j SNAT -s 10.69.14.148/30 --to-source 10.69.14.3
+  ```
+
+# Soal 2
+
+Kalian diminta untuk melakukan drop semua TCP dan UDP kecuali port 8080 pada TCP.
+
+```
+#!/bin/bash
+
+iptables -F
+iptables -A INPUT -p icmp -j ACCEPT
+iptables -A INPUT -p tcp --dport 8080 -j ACCEPT
+iptables -A INPUT -p tcp -j DROP
+iptables -A INPUT -p udp -j DROP
+```
+
+# Soal 3
+
+Kepala Suku North Area meminta kalian untuk membatasi DHCP dan DNS Server hanya dapat dilakukan ping oleh maksimal 3 device secara bersamaan, selebihnya akan di drop.
+
+```
+#!/bin/bash
+
+# DHCP (Revolte) dan DNS Server (Richter)
+
+iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+
+iptables -A INPUT -p icmp -m connlimit --connlimit-above 3 --connlimit-mask 0 -j DROP
+```
+
+# Soal 4
+
+Lakukan pembatasan sehingga koneksi SSH pada Web Server hanya dapat dilakukan oleh masyarakat yang berada pada GrobeForest.
+
+```
+#!/bin/bash
+
+# Web Server (Stark & Sein) -> no 4
+iptables -A INPUT -p tcp --dport 22 -s 10.69.8.0/22 -j ACCEPT
+```
+
+# Soal 5
+
+Selain itu, akses menuju WebServer hanya diperbolehkan saat jam kerja yaitu Senin-Jumat pada pukul 08.00-16.00.
+
+```
+iptables -A INPUT -p tcp --dport 22 -s 10.69.8.0/22 -m time --timestart 08:00 --timestop 16:00 --weekdays Mon,Tue,Wed,Thu,Fri -j ACCEPT
+```
+
+# Soal 6
+
+Lalu, karena ternyata terdapat beberapa waktu di mana network administrator dari WebServer tidak bisa stand by, sehingga perlu ditambahkan rule bahwa akses pada hari Senin - Kamis pada jam 12.00 - 13.00 dilarang (istirahat maksi cuy) dan akses di hari Jumat pada jam 11.00 - 13.00 juga dilarang (maklum, Jumatan rek).
+
+```
+iptables -A INPUT -p tcp --dport 22 -s 10.69.8.0/22 -m time --timestart 12:00 --timestop 13:00 --weekdays Mon,Tue,Wed,Thu -j DROP
+iptables -A INPUT -p tcp --dport 22 -s 10.69.8.0/22 -m time --timestart 11:00 --timestop 13:00 --weekdays Fri -j DROP
+
+iptables -A INPUT -p tcp --dport 22 -j
+```
+
+# Soal 7
+
+Karena terdapat 2 WebServer, kalian diminta agar setiap client yang mengakses Sein dengan Port 80 akan didistribusikan secara bergantian pada Sein dan Stark secara berurutan dan request dari client yang mengakses Stark dengan port 443 akan didistribusikan secara bergantian pada Sein dan Stark secara berurutan.
+
+```
+#!/bin/bash
+
+# heiter & frieren
+
+iptables -A PREROUTING -t nat -p tcp --dport 80 -d 10.69.8.2 -m statistic --mode nth --every 2 --packet 0 -j DNAT --to-destination 10.69.8.2
+
+iptables -A PREROUTING -t nat -p tcp --dport 80 -d 10.69.8.2 -j DNAT --to-destination 10.69.14.138
+
+iptables -A PREROUTING -t nat -p tcp --dport 443 -d 10.69.14.138 -m statistic --mode nth --every 2 --packet 0 -j DNAT --to-destination 10.69.14.138
+
+iptables -A PREROUTING -t nat -p tcp --dport 443 -d 10.69.14.138 -j DNAT --to-destination 10.69.8.2
+```
+
+# Soal 8
+
+Karena berbeda koalisi politik, maka subnet dengan masyarakat yang berada pada Revolte dilarang keras mengakses WebServer hingga masa pencoblosan pemilu kepala suku 2024 berakhir. Masa pemilu (hingga pemungutan dan penghitungan suara selesai) kepala suku bersamaan dengan masa pemilu Presiden dan Wakil Presiden Indonesia 2024.
+
+```
+#!/bin/bash
+
+# revolte
+
+revolte="10.69.14.148/30"
+
+pemilu_start=$(date -d "2023-10-19T00:00" +"%Y-%m-%dT%H:%M")
+
+pemilu_end=$(date -d "2024-02-15T00:00" +"%Y-%m-%dT%H:%M")
+
+iptables -A INPUT -p tcp -s $revolte --dport 80 -m time --datestart "$pemilu_start" --datestop "$pemilu_end" -j DROP
+```
+
+# Soal 9
+
+Sadar akan adanya potensial saling serang antar kubu politik, maka WebServer harus dapat secara otomatis memblokir  alamat IP yang melakukan scanning port dalam jumlah banyak (maksimal 20 scan port) di dalam selang waktu 10 menit.
+
+```
+iptables -N scan_port
+
+iptables -A INPUT -m recent --name scan_port --update --seconds 600 --hitcount 20 -j DROP
+
+iptables -A FORWARD -m recent --name scan_port --update --seconds 600 --hitcount 20 -j DROP
+
+iptables -A INPUT -m recent --name scan_port --set -j ACCEPT
+
+iptables -A FORWARD -m recent --name scan_port --set -j ACCEPT
+```
+
+Check
+
+```
+for i in {1..25}; do
+  echo $i
+  nmap -p 80 -T2 -sS 10.69.8.2
+  sleep 3
+done
+```
+
+# Soal 10
+
+Karena kepala suku ingin tau paket apa saja yang di-drop, maka di setiap node server dan router ditambahkan logging paket yang di-drop dengan standard syslog level
+
+```
+#!/bin/bash
+
+# semua node
+
+iptables -A INPUT -j LOG --log-level debug --log-prefix 'Dropped Packet' -m limit --limit 1/second --limit-burst 10
+```
     
