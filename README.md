@@ -444,8 +444,27 @@ pada `Revolte`:
 1. Install `apt-get install isc-dhcp-relay -y` pada Aura, Heiter, Himmel, Fern dan Frieren, `apt-get install isc-dhcp-server` pada Revolte
 2. Pada Router (Aura, Heiter, Himmel, Fern dan Frieren) jalankan command berikut
     ```
+    #!/bin/bash
+
     apt update
-      apt-get install isc-dhcp-relay rsyslog -y
+    apt-get install isc-dhcp-relay rsyslog -y
+
+    echo "# Defaults for isc-dhcp-relay initscript
+    # sourced by /etc/init.d/isc-dhcp-relay
+    # installed at /etc/default/isc-dhcp-relay by the maintainer scripts
+    # What servers should the DHCP relay forward requests to?
+    SERVERS=\"10.69.14.150\"
+
+    # On what interfaces should the DHCP relay (dhrelay) serve DHCP requests?
+    INTERFACES=\"eth0 eth1 eth2\"
+
+    # Additional options that are passed to the DHCP relay daemon?
+    OPTIONS=\"\"" >/etc/default/isc-dhcp-relay
+
+    service rsyslog start
+
+    service isc-dhcp-relay restart
+    service isc-dhcp-relay status
     ```
 
     
