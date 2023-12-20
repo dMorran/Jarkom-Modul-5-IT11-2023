@@ -658,6 +658,11 @@ iptables -A PREROUTING -t nat -p tcp --dport 443 -d 10.69.14.138 -m statistic --
 iptables -A PREROUTING -t nat -p tcp --dport 443 -d 10.69.14.138 -j DNAT --to-destination 10.69.8.2
 ```
 
+hasil testing
+
+![image](https://github.com/dMorran/Jarkom-Modul-5-IT11-2023/assets/107184933/58f0768e-7199-4212-9e23-dd5b54bafa34)
+
+
 # Soal 8
 
 Karena berbeda koalisi politik, maka subnet dengan masyarakat yang berada pada Revolte dilarang keras mengakses WebServer hingga masa pencoblosan pemilu kepala suku 2024 berakhir. Masa pemilu (hingga pemungutan dan penghitungan suara selesai) kepala suku bersamaan dengan masa pemilu Presiden dan Wakil Presiden Indonesia 2024.
@@ -675,6 +680,11 @@ pemilu_end=$(date -d "2024-02-15T00:00" +"%Y-%m-%dT%H:%M")
 
 iptables -A INPUT -p tcp -s $revolte --dport 80 -m time --datestart "$pemilu_start" --datestop "$pemilu_end" -j DROP
 ```
+
+Hasil config
+
+![image](https://github.com/dMorran/Jarkom-Modul-5-IT11-2023/assets/107184933/7e915b41-5578-4b79-ab2e-fd2671eba037)
+
 
 # Soal 9
 
@@ -701,6 +711,8 @@ for i in {1..25}; do
   sleep 3
 done
 ```
+
+
 
 # Soal 10
 
