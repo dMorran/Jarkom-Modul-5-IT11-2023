@@ -712,7 +712,11 @@ for i in {1..25}; do
 done
 ```
 
+Hasil testing
 
+![image](https://github.com/dMorran/Jarkom-Modul-5-IT11-2023/assets/107184933/a477e753-b3c3-4e91-9497-d14800bc9620)
+
+Hanya 20 paket yang diterima, dan sisanya akan ditolak
 
 # Soal 10
 
@@ -725,4 +729,5 @@ Karena kepala suku ingin tau paket apa saja yang di-drop, maka di setiap node se
 
 iptables -A INPUT -j LOG --log-level debug --log-prefix 'Dropped Packet' -m limit --limit 1/second --limit-burst 10
 ```
-    
+## Problem
+- Pada Nomor 10 syslog pada `/var/log/syslog` tidak mau update
