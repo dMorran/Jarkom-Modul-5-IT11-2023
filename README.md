@@ -570,7 +570,15 @@ jalankan command berikut pada sein dan stark
 # Web Server (Stark & Sein) -> no 4
 iptables -A INPUT -p tcp --dport 22 -s 10.69.8.0/22 -j ACCEPT
 ```
-untuk testing jalankan command telnet `telnet 10.69.8.2 22` paga Grboe forest maka akan tampak bahwa grobe-forest sudah terhubung dengan Sein
+untuk testing jalankan command
+
+Buka koneksi port SSH dari sisi Sein terlebih dahulu dengan command
+
+```
+nc -l -p 22
+```
+
+telnet `telnet 10.69.8.2 22` pada Grobe-forest maka akan tampak bahwa grobe-forest sudah terhubung dengan Sein
 
 ![image](https://github.com/dMorran/Jarkom-Modul-5-IT11-2023/assets/107184933/d156033f-0824-4fee-bf49-702843ac76f8)
 
@@ -578,6 +586,9 @@ Sedangkan apabila menjalankannya pada Turk-Region, maka akan dapat pesan eror
 
 ![image](https://github.com/dMorran/Jarkom-Modul-5-IT11-2023/assets/107184933/26287beb-e8ee-4a06-b132-3b4bf1a32c5a)
 
+testing juga bisa dilakukan dengan nmap
+
+![image](https://github.com/dMorran/Jarkom-Modul-5-IT11-2023/assets/107184933/55646c48-f406-4919-803b-40bee9d8eb63)
 
 # Soal 5
 
@@ -585,7 +596,23 @@ Selain itu, akses menuju WebServer hanya diperbolehkan saat jam kerja yaitu Seni
 
 ```
 iptables -A INPUT -p tcp --dport 22 -s 10.69.8.0/22 -m time --timestart 08:00 --timestop 16:00 --weekdays Mon,Tue,Wed,Thu,Fri -j ACCEPT
+iptables -A INPUT -p tcp --dport 22 -j DROP
 ```
+Untuk testing jalankan command ping ke web server, disini digunakan Sein jalankan `ping  10.69.8.2`. 
+
+Testing pada Hari Rabu Pukul 10:00 
+
+![image](https://github.com/dMorran/Jarkom-Modul-5-IT11-2023/assets/107184933/dcb4f041-c86d-43a9-bed7-abdfe2a2203f)
+
+Kemudian untuk testing pada Hari ini pukul 18:00 dapat dilakukan dengan menjalankan sebuah command berikut terlebih dahulu ``date -s "20 DEC 2023 20:00:00"`` 
+
+Hasilnya adalah tidak dapat melakukan ping karena diluat jam kerja
+
+![image](https://github.com/dMorran/Jarkom-Modul-5-IT11-2023/assets/107184933/c547a2ea-fef9-42b2-a4fe-96da1a7bc42b)
+
+Untuk testing diluar hari kerja maka set harinya menjadi hari sabtu ``date -s "23 DEC 2023 20:00:00"``. Maka sama seperti sebelumnya Web server tidak akan dapat diakses
+
+![image](https://github.com/dMorran/Jarkom-Modul-5-IT11-2023/assets/107184933/b4f2e5ed-1f80-418b-9194-6633cc2cce49)
 
 # Soal 6
 
