@@ -506,6 +506,11 @@ Agar topologi yang kalian buat dapat mengakses keluar, kalian diminta untuk meng
   iptables -t nat -A POSTROUTING -o eth0 -j SNAT -s 10.69.14.148/30 --to-source 10.69.14.3
   ```
 
+Untuk mengecek apakah sudah bisa akses keluar, dilakukan testing pada `Fern` dnegan melakukan ping pada google.com berikut ini merupakan hasil testing yang sudah dilakukan
+
+![ping_fern](https://github.com/dMorran/Jarkom-Modul-5-IT11-2023/assets/107184933/528de99f-af5a-42b2-a4d6-595933344c61)
+
+
 # Soal 2
 
 Kalian diminta untuk melakukan drop semua TCP dan UDP kecuali port 8080 pada TCP.
@@ -519,6 +524,18 @@ iptables -A INPUT -p tcp --dport 8080 -j ACCEPT
 iptables -A INPUT -p tcp -j DROP
 iptables -A INPUT -p udp -j DROP
 ```
+Untuk melakukan testing, kode tersebut dijalankan di salah satu client, contohnya Laub-hills
+
+![image](https://github.com/dMorran/Jarkom-Modul-5-IT11-2023/assets/107184933/cec6552a-df93-4f9a-a7bf-249bfc7913d0)
+
+Kemudian untuk mengetesnya cukup menjalankan command `nmap -p 80 10.69.12.2` pada Schwer-Mountain. Hasilnya adalah koneksi filtered untuk port 80,
+
+![image](https://github.com/dMorran/Jarkom-Modul-5-IT11-2023/assets/107184933/5233c61c-4400-4ed1-b872-df101eb2b9ed)
+
+sedangkan apabila menggunakan command `nmap -p 8080 10.69.12.2` hasilnya koneksi closed (terhubung namun tidak ada layanan yang aktif)
+
+![image](https://github.com/dMorran/Jarkom-Modul-5-IT11-2023/assets/107184933/f571c29e-7b32-44c8-81d8-3d30d49195a0)
+
 
 # Soal 3
 
@@ -533,17 +550,34 @@ iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
 
 iptables -A INPUT -p icmp -m connlimit --connlimit-above 3 --connlimit-mask 0 -j DROP
 ```
+masukkan kode tersebut pada DHCP dan DNS Server
+
+![image](https://github.com/dMorran/Jarkom-Modul-5-IT11-2023/assets/107184933/e796ab3f-0a75-4617-bf37-b98e8c00e8ae)
+
+Untuk melakukan testing maka dilakukan ping dari keempat client lain ke Revolte `ping 10.69.14.146`
+
+![image](https://github.com/dMorran/Jarkom-Modul-5-IT11-2023/assets/107184933/b250c74d-30b6-4511-bc2d-f5fd031a26f3)
+
 
 # Soal 4
 
 Lakukan pembatasan sehingga koneksi SSH pada Web Server hanya dapat dilakukan oleh masyarakat yang berada pada GrobeForest.
 
+jalankan command berikut pada sein dan stark
 ```
 #!/bin/bash
 
 # Web Server (Stark & Sein) -> no 4
 iptables -A INPUT -p tcp --dport 22 -s 10.69.8.0/22 -j ACCEPT
 ```
+untuk testing jalankan command telnet `telnet 10.69.8.2 22` paga Grboe forest maka akan tampak bahwa grobe-forest sudah terhubung dengan Sein
+
+![image](https://github.com/dMorran/Jarkom-Modul-5-IT11-2023/assets/107184933/d156033f-0824-4fee-bf49-702843ac76f8)
+
+Sedangkan apabila menjalankannya pada Turk-Region, maka akan dapat pesan eror
+
+![image](https://github.com/dMorran/Jarkom-Modul-5-IT11-2023/assets/107184933/26287beb-e8ee-4a06-b132-3b4bf1a32c5a)
+
 
 # Soal 5
 
