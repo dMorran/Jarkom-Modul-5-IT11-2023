@@ -635,10 +635,9 @@ ping pada Jumat pukul 12:00, hasilnya tidak dapat melakukan ping karena diluar j
 
 ![image](https://github.com/dMorran/Jarkom-Modul-5-IT11-2023/assets/107184933/f93823e2-fbdb-4136-b8f1-093230372b6d)
 
+ping pada Jumat pukul 09:00 dapat dilakukan karena masih jam kerja
 
-
-
-
+![image](https://github.com/dMorran/Jarkom-Modul-5-IT11-2023/assets/107184933/1183266c-5542-4f5e-8f6c-ae66de015d21)
 
 
 # Soal 7
