@@ -629,16 +629,15 @@ Langkah testing sama seperti no 5 jalankan command ``date -s "20 DEC 2023 12:30:
 
 ping pada Rabu pukul 10:00 
 
-![image](https://github.com/dMorran/Jarkom-Modul-5-IT11-2023/assets/107184933/017c7fbf-0813-4f35-bcde-348e3a850d7c)
+![image](https://github.com/dMorran/Jarkom-Modul-5-IT11-2023/assets/107184933/41b0e392-1794-4b0b-847b-352232931472)
 
 ping pada Jumat pukul 12:00, hasilnya tidak dapat melakukan ping karena diluar jam kerja
 
 ![image](https://github.com/dMorran/Jarkom-Modul-5-IT11-2023/assets/107184933/f93823e2-fbdb-4136-b8f1-093230372b6d)
 
 
-Ping di hari Jumat pukul 09:00 status koneksi open karena masih jam kerja
 
-![image](https://github.com/dMorran/Jarkom-Modul-5-IT11-2023/assets/107184933/eb7af68b-17d5-472a-af69-d0a7e26da873)
+
 
 
 
