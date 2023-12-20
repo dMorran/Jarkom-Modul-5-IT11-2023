@@ -596,7 +596,6 @@ Selain itu, akses menuju WebServer hanya diperbolehkan saat jam kerja yaitu Seni
 
 ```
 iptables -A INPUT -p tcp --dport 22 -s 10.69.8.0/22 -m time --timestart 08:00 --timestop 16:00 --weekdays Mon,Tue,Wed,Thu,Fri -j ACCEPT
-iptables -A INPUT -p tcp --dport 22 -j DROP
 ```
 Untuk testing jalankan command ping ke web server, disini digunakan Sein jalankan `ping  10.69.8.2`. 
 
@@ -624,6 +623,24 @@ iptables -A INPUT -p tcp --dport 22 -s 10.69.8.0/22 -m time --timestart 11:00 --
 
 iptables -A INPUT -p tcp --dport 22 -j
 ```
+Langkah testing sama seperti no 5 jalankan command ``date -s "20 DEC 2023 12:30:00"`` maka tidak akan bisa melakukan ping
+
+![image](https://github.com/dMorran/Jarkom-Modul-5-IT11-2023/assets/107184933/6dd88128-f611-4534-bcf2-4cdfde9fc24d)
+
+ping pada Rabu pukul 10:00 
+
+![image](https://github.com/dMorran/Jarkom-Modul-5-IT11-2023/assets/107184933/017c7fbf-0813-4f35-bcde-348e3a850d7c)
+
+ping pada Jumat pukul 12:00, hasilnya tidak dapat melakukan ping karena diluar jam kerja
+
+![image](https://github.com/dMorran/Jarkom-Modul-5-IT11-2023/assets/107184933/f93823e2-fbdb-4136-b8f1-093230372b6d)
+
+
+Ping di hari Jumat pukul 09:00 status koneksi open karena masih jam kerja
+
+![image](https://github.com/dMorran/Jarkom-Modul-5-IT11-2023/assets/107184933/eb7af68b-17d5-472a-af69-d0a7e26da873)
+
+
 
 # Soal 7
 
